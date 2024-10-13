@@ -204,7 +204,7 @@ class HilbertsHotel:
     def memory_usage(self):
         return sys.getsizeof(self.hash_table) + sys.getsizeof(self.root)
 
-HilbertsHotel = HilbertsHotel(size=100)
+HilbertsHotel = HilbertsHotel(100)
 
 for i in range(10) :
     for j in range(3):
@@ -220,12 +220,8 @@ print("sorted_rooms:", HilbertsHotel.sort_rooms())
 
 print("number of empty room:", HilbertsHotel.empty_rooms())
 
-print("Find room 128:", HilbertsHotel.find_room(128))
+print("Find room 32:", HilbertsHotel.find_room(32))
 
-# HilbertsHotel.remove_room(128)
-
-print("Find room 128:", HilbertsHotel.find_room(128))
-
-HilbertsHotel.save_to_file("./hotel_rooms.csv")
+HilbertsHotel.save_to_file("./data_hotel_rooms.csv")
 
 print("Memory Usage:", HilbertsHotel.memory_usage())

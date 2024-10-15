@@ -73,7 +73,14 @@ def exec_time(func):
         start = time.time()
         result = func(*args, **kwargs)
         stop = time.time()
-        print(f"{func.__name__} takes {stop - start:.4f} seconds")
+        if func.__name__ == 'add_room':
+            room_number = result
+            print(f"{func.__name__} takes {stop - start:.4f} seconds and {args[0].collisions} collisions add room {result}\n" )
+            
+        elif func.__name__ == 'remove_room':
+            print(f"{func.__name__} takes {stop - start:.4f} seconds and remove room {args[1]}\n")
+        else:
+            print(f"{func.__name__} takes {stop - start:.4f} seconds")
         return result
     return wrapper
 
@@ -106,7 +113,7 @@ class HashTable:
         for i, (room_number, value) in enumerate(self.table[index]):
             if room_number == key:
                 del self.table[index][i]
-                self.count -= 1  # Decrease count after removal
+                self.count -= 1  
                 break
     
     def resize(self):
@@ -124,12 +131,12 @@ class HashTable:
         print(f"Resized hash table to new size: {self.size}")
 
 class HilbertsHotel:
-    def __init__(self, size: int = 100):
+    def __init__(self, size: int = 50):
         self.avl_tree = AVLTree()
         self.root = None
         self.hash_table = HashTable(size)
         self.max_room_number = 0
-        self.
+        self.collisions = 0
 
     def calculate_room_number(self, fleet: int, ship: int, bus: int, guest: int):
         return ((fleet+1) ** 7) * ((ship+1)**5) * ((bus+1) ** 3) * ((guest+1) ** 2)
@@ -139,12 +146,30 @@ class HilbertsHotel:
     def add_room(self, fleet: int, ship: int, bus: int, guest: int):
         room_number = self.calculate_room_number(fleet, ship, bus, guest)
         
-        print("Room Number:", room_number)
+        # print("Room Number:", room_number)
+        # if self.hash_table.search(room_number) is None:
+        #     self.hash_table.insert(room_number, (fleet, ship, bus, guest))
+        #     self.root = self.avl_tree.insert(self.root,room_number)
+        #     self.max_room_number = max(self.max_room_number, room_number)
+
         if self.hash_table.search(room_number) is None:
             self.hash_table.insert(room_number, (fleet, ship, bus, guest))
-            self.root = self.avl_tree.insert(self.root,room_number)
+            self.root = self.avl_tree.insert(self.root, room_number)
             self.max_room_number = max(self.max_room_number, room_number)
-        
+        else:
+            self.collisions += 1
+            for i in range(1,self.hash_table.size):
+                new_room_number = (room_number + (i**2))%self.hash_table.size
+                if self.hash_table.search(new_room_number) is None:
+                    self.hash_table.insert(new_room_number, (fleet, ship, bus, guest))
+                    self.root = self.avl_tree.insert(self.root, new_room_number)
+                    self.max_room_number = max(self.max_room_number, new_room_number)
+                    room_number = new_room_number
+                    break
+            if self.collisions == 10:
+                self.collisions = 0
+                self.hash_table.resize()
+
         return room_number
 
     @exec_time
@@ -186,13 +211,16 @@ HilbertsHotel = HilbertsHotel(100)
 
 for i in range(10) :
     for j in range(3):
-        HilbertsHotel.add_room(1,1,j,i)
+        HilbertsHotel.add_room(0,0,j,i)
+
+sorted_rooms = HilbertsHotel.sort_rooms()
+print("Sorted Rooms:", sorted_rooms)
 
 sorted_rooms = HilbertsHotel.sort_rooms()
 
 print("Sorted Rooms:", sorted_rooms)
 
-HilbertsHotel.add_room(2, 1, 1, 1)
+# HilbertsHotel.add_room(2, 1, 1, 1)
 
 print("sorted_rooms:", HilbertsHotel.sort_rooms())
 

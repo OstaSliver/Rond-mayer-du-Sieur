@@ -77,32 +77,6 @@ def exec_time(func):
         return result
     return wrapper
 
-# class HashTable:
-#     def __init__(self, size: int):
-#         self.size = size
-#         self.table = [[] for _ in range(size)]
-
-#     def hash_function(self, key: int) -> int:
-#         return key % self.size
-
-#     def insert(self, key: int, value):
-#         index = self.hash_function(key)
-#         self.table[index].append((key, value))
-
-#     def search(self, key: int):
-#         index = self.hash_function(key)
-#         for room_number, value in self.table[index]:
-#             if room_number == key:
-#                 return value
-#         return None
-
-#     def remove(self, key: int):
-#         index = self.hash_function(key)
-#         for i, (room_number, value) in enumerate(self.table[index]):
-#             if room_number == key:
-#                 del self.table[index][i]
-#                 break
-
 class HashTable:
     def __init__(self, size: int):
         self.size = size
@@ -155,13 +129,16 @@ class HilbertsHotel:
         self.root = None
         self.hash_table = HashTable(size)
         self.max_room_number = 0
+        self.
 
-    def calculate_room_number(self, fleet: int, ship: int, bus: int, guest: int) -> int:
-        return (fleet ** 7) * (ship ** 5) * (bus ** 3) * (guest ** 2)
+    def calculate_room_number(self, fleet: int, ship: int, bus: int, guest: int):
+        return ((fleet+1) ** 7) * ((ship+1)**5) * ((bus+1) ** 3) * ((guest+1) ** 2)
+    
         
     @exec_time
-    def add_room(self, fleet: int, ship: int, bus: int, guest: int) -> int:
+    def add_room(self, fleet: int, ship: int, bus: int, guest: int):
         room_number = self.calculate_room_number(fleet, ship, bus, guest)
+        
         print("Room Number:", room_number)
         if self.hash_table.search(room_number) is None:
             self.hash_table.insert(room_number, (fleet, ship, bus, guest))
@@ -201,6 +178,7 @@ class HilbertsHotel:
         df = pd.DataFrame(result, columns=['Room Number', 'Fleet', 'Ship', 'Bus', 'Guest'])
         df.to_csv(file_name, index=False)
 
+    
     def memory_usage(self):
         return sys.getsizeof(self.hash_table) + sys.getsizeof(self.root)
 

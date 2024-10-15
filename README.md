@@ -15,4 +15,4 @@ This project analyzes hotel room data to provide insights and visualizations.
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the required dependencies.
 
 ```bash
-pip install -r [requirements.txt]
+pip install -r requirements.txt

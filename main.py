@@ -125,24 +125,24 @@ def exec_time(func):
 class HashTable:
     def __init__(self, size: int):
         self.size = size
-        self.count = 0  # To track the number of elements
-        self.table = [None] * size  # Initialize with None to simplify checks
+        self.count = 0  
+        self.table = [None] * size  
     
     def hash_function(self, key: int) -> int:
         return key % self.size
     
     def hash_function_2(self, key: int) -> int:
-        return 7 - (key % 7)  # Secondary hash function to handle collisions
+        return 7 - (key % 7)  
     
     def insert(self, key: int, value):
         if self.count / self.size >= 0.7:  # Check load factor (e.g., 70% full)
-            self.resize()  # Expand table if needed
+            self.resize()  
         
         i = 0
         while i < self.size:
             index = (self.hash_function(key) + i * self.hash_function_2(key)) % self.size
-            if self.table[index] is None:  # Empty slot found
-                self.table[index] = (key, value)  # Insert the item as a tuple
+            if self.table[index] is None:  
+                self.table[index] = (key, value)  
                 self.count += 1
                 return
             i += 1
@@ -151,10 +151,10 @@ class HashTable:
         i = 0
         while i < self.size:
             index = (self.hash_function(key) + i * self.hash_function_2(key)) % self.size
-            if self.table[index] is None:  # Stop if an empty slot is encountered
+            if self.table[index] is None:  
                 return None
-            if self.table[index][0] == key:  # Check if the key matches
-                return self.table[index][1]  # Return the value
+            if self.table[index][0] == key:  
+                return self.table[index][1] 
             i += 1
         return None
 
@@ -162,20 +162,20 @@ class HashTable:
         i = 0
         while i < self.size:
             index = (self.hash_function(key) + i * self.hash_function_2(key)) % self.size
-            if self.table[index] is None:  # Stop if an empty slot is encountered
+            if self.table[index] is None:  
                 return
-            if self.table[index][0] == key:  # Check if the key matches
-                self.table[index] = None  # Mark as deleted
+            if self.table[index][0] == key:  
+                self.table[index] = None  
                 self.count -= 1
                 break
             i += 1
     
     def resize(self):
-        new_size = self.size * 2  # Double the size
-        new_table = [None] * new_size  # Create a new table
+        new_size = self.size * 2 
+        new_table = [None] * new_size
         
         for item in self.table:
-            if item is not None:  # Rehash non-deleted items
+            if item is not None: 
                 key, value = item
                 i = 0
                 while i < new_size:

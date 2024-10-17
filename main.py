@@ -188,6 +188,7 @@ class HashTable:
         self.size = new_size 
         self.table = new_table 
         print(f"Resized hash table to new size: {self.size}")
+        
 class HilbertsHotel:
     def __init__(self, size: int = 50):
         self.avl_tree = AVLTree()

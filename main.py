@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 import time
+
 class AVLNode:
     def __init__(self, key):
         self.key = key
@@ -270,18 +271,23 @@ class HilbertsHotel:
     @exec_time
     def add_room(self, fleet: int, ship: int, bus: int, guest: int):
         room_number = self.calculate_room_number(fleet, ship, bus, guest)
-        
+
+    # Search for room in the hash table
         if self.hash_table.search(room_number) is None:
             self.hash_table.insert(room_number, (fleet, ship, bus, guest))
             self.root = self.avl_tree.insert(self.root, room_number)
             self.max_room_number = max(self.max_room_number, room_number)
         else:
+        # Handle collision using quadratic probing
             i = 0
-            while self.hash_table.search(room_number + i**2) is not None:
+            new_room_number = room_number
+            while self.hash_table.search(new_room_number) is not None:
                 i += 1
-            self.hash_table.insert(room_number + i**2, (fleet, ship, bus, guest))
-            self.root = self.avl_tree.insert(self.root, room_number + i**2)
-            self.max_room_number = max(self.max_room_number, room_number + i**2)
+                new_room_number = room_number + i**2
+            self.hash_table.insert(new_room_number, (fleet, ship, bus, guest))
+            self.root = self.avl_tree.insert(self.root, new_room_number)
+            self.max_room_number = max(self.max_room_number, new_room_number)
+            room_number = new_room_number
         return room_number
 
     @exec_time
@@ -331,8 +337,113 @@ class HilbertsHotel:
 
 HilbertsHotel = HilbertsHotel(100)
 
-initialguest = int(input("Enter the guest number: "))
+initialguest = int(input("Enter the guest number for begin: "))
+
 for i in range(initialguest):
     HilbertsHotel.add_room(0,0,0,i)
-print(HilbertsHotel.sort_rooms())
-HilbertsHotel.save_to_file("rooms.csv")
+
+while True:
+    print("====================================")
+    print("1. Add Room")
+    print("2. Remove Room")
+    print("3. Sort Rooms")
+    print("4. Find Room")
+    print("5. Empty Rooms")
+    print("6. Save to File")
+    print("7. Memory Usage")
+    print("8. Exit")
+    choice = int(input("Enter your choice: "))
+    print("====================================")
+    if choice == 1:
+        print("1. add room n guest ")
+        print("2. add room n guest, n bus")
+        print("3. add room n guest, n bus, n ship")
+        print("4. add room n guest, n bus, n ship, n fleet")
+        print("5. add room number manualy")
+
+        print("6. back")    
+        choice = int(input("Enter your choice: "))
+        print("====================================")
+        if choice == 1:
+            guest = int(input("Enter the guest number: "))
+            for i in range(guest):
+                HilbertsHotel.add_room(0,0,0,i)
+        elif choice == 2:
+            guest = int(input("Enter the guest number: "))
+            bus = int(input("Enter the bus number: "))
+            for i in range(bus):
+                for j in range(guest):
+                    HilbertsHotel.add_room(0,0,i,j)
+        elif choice == 3:
+            guest = int(input("Enter the guest number: "))
+            bus = int(input("Enter the bus number: "))
+            ship = int(input("Enter the ship number: "))
+            for i in range(ship):
+                for j in range(bus):
+                    for k in range(guest):
+                        HilbertsHotel.add_room(0,i,j,k)
+        elif choice == 4:
+            guest = int(input("Enter the guest number: "))
+            bus = int(input("Enter the bus number: "))
+            ship = int(input("Enter the ship number: "))
+            fleet = int(input("Enter the fleet number: "))
+            
+            for i in range(fleet):
+                for j in range(ship):
+                    for k in range(bus):
+                        for l in range(guest):
+                            HilbertsHotel.add_room(i,j,k,l)
+        elif choice == 5:
+            continue
+        else:
+            print("Invalid choice")
+
+    elif choice == 2:
+        room_number = int(input("Enter the room number you need remove: "))
+        HilbertsHotel.remove_room(room_number)
+
+    elif choice == 3:
+        print(HilbertsHotel.sort_rooms())
+
+    elif choice == 4:
+        room_number = int(input("Enter the room number you need find: "))
+        result = HilbertsHotel.find_room(room_number)
+        if result is not None:
+            print(f"Room {room_number} details: {result}")
+        else:
+            print(f"Room {room_number} not found")
+
+    elif choice == 5:
+        print("1. all Empty Rooms count")
+        print("2. Empty Rooms list")
+        print("3. back")
+        choice = int(input("Enter your choice: "))
+        print("====================================")
+        if choice == 1:
+            print("Empty Room count :" + str(HilbertsHotel.empty_rooms()))
+        elif choice == 2:
+            print("Empty Rooms list")
+            result = []
+            sorted_rooms = HilbertsHotel.sort_rooms()
+            for i in range(HilbertsHotel.max_room_number):
+                if i not in sorted_rooms:
+                    result.append(i)
+            print(result)
+        elif choice == 3:
+            continue
+        else:
+            print("Invalid choice")
+
+    elif choice == 6:
+        file_name = input("Enter the file name: ")
+        if not file_name.endswith('.csv'):
+            file_name += '.csv'
+        HilbertsHotel.save_to_file(file_name)
+
+    elif choice == 7:
+        print(HilbertsHotel.memory_usage())
+
+    elif choice == 8:
+        break
+    else:
+        print("Invalid choice")

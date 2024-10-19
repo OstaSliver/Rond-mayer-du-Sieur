@@ -329,11 +329,13 @@ class HilbertsHotel:
         for slot in data:
             if slot is not None:
                 slot.inorder_traversal(slot.root, result)
-
         # room_number_fleet_ship_bus_guest
         with open(file_name, 'w') as file:
             for room in result:
-                file.write(f"{room[0]}_{room[1][0]}_{room[1][1]}_{room[1][2]}_{room[1][3]}\n")
+                if room[1] == "Manual":
+                    file.write(f"{room[0]}_Manual\n")
+                else:
+                    file.write(f"{room[0]}_{room[1][0]}_{room[1][1]}_{room[1][2]}_{room[1][3]}\n")
 
                 
     def memory_usage(self):
@@ -510,7 +512,13 @@ while True:
         HilbertsHotel.remove_room(room_number)
 
     elif choice == 3:
-        print(HilbertsHotel.sort_rooms())
+        result = HilbertsHotel.sort_rooms()
+        print("sorted rooms:")
+        if result:
+                for room in result[:-1]:
+                    print(room, end=", ")   
+                print(result[-1], end="")            
+                print("\n")
 
     elif choice == 4:
         while True:
@@ -566,7 +574,7 @@ while True:
     elif choice == 6:
         file_name = input("Enter the file name: ")
         if not file_name.endswith('.txt'):
-            file_name += '.csv'
+            file_name += '.txt'
         HilbertsHotel.save_to_file(file_name)
 
     elif choice == 7:

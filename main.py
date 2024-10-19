@@ -351,9 +351,12 @@ while True:
     else:
         print("Invalid guest number")
     
-
+start = time.time()
 for i in range(initialguest):
     HilbertsHotel.add_room(0,0,0,i)
+
+stop = time.time()
+print(f"Add room all time takes {stop - start:.4f} seconds\n")
 
 while True:
     print("====================================")
@@ -393,8 +396,12 @@ while True:
                 if valid_date(guest):
                     guest = int(guest)
                     break
+            start = time.time()
             for i in range(guest):
                 HilbertsHotel.add_room(0,0,0,i)
+            stop = time.time()
+            print(f"Add room all time takes {stop - start:.4f} seconds\n")
+
         elif choice == 2:
             while True:
                 guest = input("Enter the guest number: ")
@@ -411,10 +418,14 @@ while True:
                     break
                 else:
                     print("Invalid bus number")
-        
+
+            start = time.time()
             for i in range(bus):
                 for j in range(guest):
                     HilbertsHotel.add_room(0,0,i,j)
+            stop = time.time()
+            print(f"Add room all time takes {stop - start:.4f} seconds\n")
+
         elif choice == 3:
             while True:
                 guest = input("Enter the guest number: ")
@@ -439,12 +450,13 @@ while True:
                     break
                 else:
                     print("Invalid ship number")
-            
+            start = time.time()
             for i in range(ship):
                 for j in range(bus):
                     for k in range(guest):
                         HilbertsHotel.add_room(0,i,j,k)
-
+            stop = time.time()
+            print(f"Add room all time takes {stop - start:.4f} seconds\n")
         elif choice == 4:
             while True: 
                 guest = input("Enter the guest number: ")
@@ -477,12 +489,13 @@ while True:
                     break
                 else:
                     print("Invalid fleet number")
-            
+            start = time.time()
             for i in range(fleet):
                 for j in range(ship):
                     for k in range(bus):
                         for l in range(guest):
                             HilbertsHotel.add_room(i,j,k,l)
+            stop = time.time()
         elif choice == 5:
 
             while True:
@@ -493,6 +506,7 @@ while True:
                 else:
                     print("Invalid room number")
             
+
             if HilbertsHotel.add_room_manual(room_number) is not None:
                 print(f"Room {room_number} added successfully")
             else:

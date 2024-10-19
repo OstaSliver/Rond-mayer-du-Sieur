@@ -289,6 +289,7 @@ class HilbertsHotel:
             self.root = self.avl_tree.insert(self.root, new_room_number)
             self.max_room_number = max(self.max_room_number, new_room_number)
             room_number = new_room_number
+            
         return room_number
 
     def add_room_manual(self, room_number: int):
@@ -551,6 +552,7 @@ while True:
             print("Empty Room count :" + str(HilbertsHotel.empty_rooms()))
         elif choice == 2:
             print("Empty Rooms list:")
+            start = time.time()
             result = []
             sorted_rooms = HilbertsHotel.sort_rooms()
         
@@ -565,6 +567,8 @@ while True:
                 print("\n")
             else:
                 print("No empty rooms available.")
+            stop = time.time()
+            print(f"Empty Rooms list takes {stop - start:.4f} seconds\n")
 
         elif choice == 3:
             continue

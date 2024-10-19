@@ -1,4 +1,3 @@
-import pandas as pd
 import sys
 import time
 def valid_date(data):
@@ -225,7 +224,7 @@ def exec_time(func):
         result = func(*args, **kwargs)
         stop = time.time()
         if func.__name__ == 'add_room':
-            room_number = result
+
             print(f"{func.__name__} takes {stop - start:.4f} seconds and add room {result}\n" )
             
         elif func.__name__ == 'remove_room':
@@ -331,16 +330,12 @@ class HilbertsHotel:
             if slot is not None:
                 slot.inorder_traversal(slot.root, result)
 
+        # room_number_fleet_ship_bus_guest
+        with open(file_name, 'w') as file:
+            for room in result:
+                file.write(f"{room[0]}_{room[1][0]}_{room[1][1]}_{room[1][2]}_{room[1][3]}\n")
 
-        df = pd.DataFrame(result, columns=['Room Number', 'Room Details'])
-
-        try:
-            df.to_csv(file_name, index=False)
-            print(f"Data successfully saved to {file_name}")
-        except Exception as e:
-            print(f"Failed to save data: {e}")
-
-
+                
     def memory_usage(self):
         return sys.getsizeof(self.hash_table) + sys.getsizeof(self.root)
 
@@ -570,7 +565,7 @@ while True:
 
     elif choice == 6:
         file_name = input("Enter the file name: ")
-        if not file_name.endswith('.csv'):
+        if not file_name.endswith('.txt'):
             file_name += '.csv'
         HilbertsHotel.save_to_file(file_name)
 

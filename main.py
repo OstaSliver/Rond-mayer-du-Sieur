@@ -1,7 +1,11 @@
 import pandas as pd
 import sys
 import time
-
+def valid_date(data):
+    if data.isdigit():
+        if int(data) >=0:
+            return True
+    return False
 class AVLNode:
     def __init__(self, key):
         self.key = key
@@ -293,9 +297,7 @@ class HilbertsHotel:
             self.hash_table.insert(room_number, "Manual")
             self.root = self.avl_tree.insert(self.root, room_number)
             self.max_room_number = max(self.max_room_number, room_number)
-            return room_number
-        else:
-            print(f"Room {room_number} already exists")
+            return room_number   
         return None
     @exec_time
     def remove_room(self, room_number: int):
@@ -343,8 +345,14 @@ class HilbertsHotel:
         return sys.getsizeof(self.hash_table) + sys.getsizeof(self.root)
 
 HilbertsHotel = HilbertsHotel(100)
-
-initialguest = int(input("Enter the guest number for begin: "))
+while True:
+    initialguest = input("Enter the guest number for begin: ")
+    if valid_date(initialguest):
+        initialguest = int(initialguest)
+        break
+    else:
+        print("Invalid guest number")
+    
 
 for i in range(initialguest):
     HilbertsHotel.add_room(0,0,0,i)
@@ -359,7 +367,11 @@ while True:
     print("6. Save to File")
     print("7. Memory Usage")
     print("8. Exit")
-    choice = int(input("Enter your choice: "))
+    while True:
+        choice = input("Enter your choice: ")
+        if valid_date(choice):
+            choice = int(choice)
+            break
     print("====================================")
     if choice == 1:
         print("1. add room n guest ")
@@ -368,32 +380,105 @@ while True:
         print("4. add room n guest, n bus, n ship, n fleet")
         print("5. add room number manualy")
 
-        print("6. back")    
-        choice = int(input("Enter your choice: "))
+        print("6. back")
+        while True:
+            choice = input("Enter your choice: ")
+            if valid_date(choice):
+                choice = int(choice)
+                break   
+            else:
+                print("Invalid choice")
         print("====================================")
         if choice == 1:
-            guest = int(input("Enter the guest number: "))
+            while True:
+                guest = input("Enter the guest number: ")
+                if valid_date(guest):
+                    guest = int(guest)
+                    break
             for i in range(guest):
                 HilbertsHotel.add_room(0,0,0,i)
         elif choice == 2:
-            guest = int(input("Enter the guest number: "))
-            bus = int(input("Enter the bus number: "))
+            while True:
+                guest = input("Enter the guest number: ")
+                if valid_date(guest):
+                    guest = int(guest)
+                    break
+                else:
+                    print("Invalid guest number")
+
+            while True:
+                bus = input("Enter the bus number: ")
+                if valid_date(bus):
+                    bus = int(bus)
+                    break
+                else:
+                    print("Invalid bus number")
+        
             for i in range(bus):
                 for j in range(guest):
                     HilbertsHotel.add_room(0,0,i,j)
         elif choice == 3:
-            guest = int(input("Enter the guest number: "))
-            bus = int(input("Enter the bus number: "))
-            ship = int(input("Enter the ship number: "))
+            while True:
+                guest = input("Enter the guest number: ")
+                if valid_date(guest):
+                    guest = int(guest)
+                    break
+                else:
+                    print("Invalid guest number")
+            
+            while True:
+                bus = input("Enter the bus number: ")
+                if valid_date(bus):
+                    bus = int(bus)
+                    break
+                else:
+                    print("Invalid bus number")
+            
+            while True:
+                ship = input("Enter the ship number: ")
+                if valid_date(ship):
+                    ship = int(ship)
+                    break
+                else:
+                    print("Invalid ship number")
+            
             for i in range(ship):
                 for j in range(bus):
                     for k in range(guest):
                         HilbertsHotel.add_room(0,i,j,k)
+
         elif choice == 4:
-            guest = int(input("Enter the guest number: "))
-            bus = int(input("Enter the bus number: "))
-            ship = int(input("Enter the ship number: "))
-            fleet = int(input("Enter the fleet number: "))
+            while True: 
+                guest = input("Enter the guest number: ")
+                if valid_date(guest):
+                    guest = int(guest)
+                    break
+                else:
+                    print("Invalid guest number")
+            
+            while True:
+                bus = input("Enter the bus number: ")
+                if valid_date(bus):
+                    bus = int(bus)
+                    break
+                else:
+                    print("Invalid bus number")
+            
+            while True:
+                ship = input("Enter the ship number: ")
+                if valid_date(ship):
+                    ship = int(ship)
+                    break
+                else:
+                    print("Invalid ship number")
+            
+            while True:
+                fleet = input("Enter the fleet number: ")
+                if valid_date(fleet):
+                    fleet = int(fleet)
+                    break
+                else:
+                    print("Invalid fleet number")
             
             for i in range(fleet):
                 for j in range(ship):
@@ -401,10 +486,16 @@ while True:
                         for l in range(guest):
                             HilbertsHotel.add_room(i,j,k,l)
         elif choice == 5:
-            room_number = int(input("Enter the room number: "))
-            if room_number < 0:
-                print("Invalid room number")
-            elif HilbertsHotel.add_room_manual(room_number) is not None:
+
+            while True:
+                room_number = input("Enter the room number: ")
+                if valid_date(room_number):
+                    room_number = int(room_number)
+                    break
+                else:
+                    print("Invalid room number")
+            
+            if HilbertsHotel.add_room_manual(room_number) is not None:
                 print(f"Room {room_number} added successfully")
             else:
                 print(f"Room {room_number} already exists")
@@ -414,14 +505,27 @@ while True:
             print("Invalid choice")
 
     elif choice == 2:
-        room_number = int(input("Enter the room number you need remove: "))
+        while True:
+            room_number = input("Enter the room number you need remove: ")
+            if valid_date(room_number):
+                room_number = int(room_number)
+                break
+            else:
+                print("Invalid room number")
         HilbertsHotel.remove_room(room_number)
 
     elif choice == 3:
         print(HilbertsHotel.sort_rooms())
 
     elif choice == 4:
-        room_number = int(input("Enter the room number you need find: "))
+        while True:
+            room_number = input("Enter the room number you need find: ")
+            if valid_date(room_number):
+                room_number = int(room_number)
+                break
+            else:
+                print("Invalid room number")
+
         result = HilbertsHotel.find_room(room_number)
         if result is not None:
             print(f"Room {room_number} details: {result}")
@@ -432,7 +536,13 @@ while True:
         print("1. all Empty Rooms count")
         print("2. Empty Rooms list")
         print("3. back")
-        choice = int(input("Enter your choice: "))
+        while True:
+            choice = input("Enter your choice: ")
+            if valid_date(choice):
+                choice = int(choice)
+                break
+            else:
+                print("Invalid choice")
         print("====================================")
         if choice == 1:
             print("Empty Room count :" + str(HilbertsHotel.empty_rooms()))

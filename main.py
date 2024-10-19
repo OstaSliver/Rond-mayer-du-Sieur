@@ -339,8 +339,28 @@ class HilbertsHotel:
                     file.write(f"{room[0]}_{room[1][0]}_{room[1][1]}_{room[1][2]}_{room[1][3]}\n")
 
                 
+
+
+
+
     def memory_usage(self):
-        return sys.getsizeof(self.hash_table) + sys.getsizeof(self.root)
+        hash_table_size = sys.getsizeof(self.hash_table)
+        for bucket in self.hash_table.table:
+            if bucket is not None:
+                hash_table_size += sys.getsizeof(bucket)
+
+        def calculate_tree_size(node):
+            if node is None:
+                return 0
+            node_size = sys.getsizeof(node)
+            node_size += sys.getsizeof(node.key) + sys.getsizeof(node.key)
+            return node_size + calculate_tree_size(node.left) + calculate_tree_size(node.right)
+
+        avl_tree_size = calculate_tree_size(self.root)
+
+        total_size = hash_table_size + avl_tree_size
+        return total_size
+
 
 HilbertsHotel = HilbertsHotel(100)
 while True:

@@ -320,7 +320,10 @@ class HilbertsHotel:
     @exec_time
     def empty_rooms(self) -> int:
         total_rooms = self.max_room_number
-        room_count = sum(1 for slot in self.hash_table.table if slot is not None)
+        result = []
+        self.avl_tree.inorder_traversal(self.root, result)
+        # room_count = sum(1 for slot in self.hash_table.table if slot is not None)
+        room_count = sum(1 for slot in result)
         return total_rooms - room_count
 
     @exec_time

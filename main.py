@@ -291,7 +291,7 @@ class HilbertsHotel:
             room_number = new_room_number
             
         return room_number
-
+    @exec_time
     def add_room_manual(self, room_number: int):
         if self.hash_table.search(room_number) is None:
             self.hash_table.insert(room_number, "Manual")

@@ -272,13 +272,11 @@ class HilbertsHotel:
     def add_room(self, fleet: int, ship: int, bus: int, guest: int):
         room_number = self.calculate_room_number(fleet, ship, bus, guest)
 
-    # Search for room in the hash table
         if self.hash_table.search(room_number) is None:
             self.hash_table.insert(room_number, (fleet, ship, bus, guest))
             self.root = self.avl_tree.insert(self.root, room_number)
             self.max_room_number = max(self.max_room_number, room_number)
         else:
-        # Handle collision using quadratic probing
             i = 0
             new_room_number = room_number
             while self.hash_table.search(new_room_number) is not None:
@@ -290,6 +288,15 @@ class HilbertsHotel:
             room_number = new_room_number
         return room_number
 
+    def add_room_manual(self, room_number: int):
+        if self.hash_table.search(room_number) is None:
+            self.hash_table.insert(room_number, "Manual")
+            self.root = self.avl_tree.insert(self.root, room_number)
+            self.max_room_number = max(self.max_room_number, room_number)
+            return room_number
+        else:
+            print(f"Room {room_number} already exists")
+        return None
     @exec_time
     def remove_room(self, room_number: int):
         if self.hash_table.search(room_number):
@@ -394,6 +401,14 @@ while True:
                         for l in range(guest):
                             HilbertsHotel.add_room(i,j,k,l)
         elif choice == 5:
+            room_number = int(input("Enter the room number: "))
+            if room_number < 0:
+                print("Invalid room number")
+            elif HilbertsHotel.add_room_manual(room_number) is not None:
+                print(f"Room {room_number} added successfully")
+            else:
+                print(f"Room {room_number} already exists")
+        elif choice == 6:
             continue
         else:
             print("Invalid choice")
@@ -422,13 +437,22 @@ while True:
         if choice == 1:
             print("Empty Room count :" + str(HilbertsHotel.empty_rooms()))
         elif choice == 2:
-            print("Empty Rooms list")
+            print("Empty Rooms list:")
             result = []
             sorted_rooms = HilbertsHotel.sort_rooms()
+        
             for i in range(HilbertsHotel.max_room_number):
                 if i not in sorted_rooms:
                     result.append(i)
-            print(result)
+        
+            if result:
+                for room in result[:-1]:
+                    print(room, end=", ")   
+                print(result[-1], end="")            
+                print("\n")
+            else:
+                print("No empty rooms available.")
+
         elif choice == 3:
             continue
         else:

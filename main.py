@@ -582,7 +582,7 @@ while True:
         HilbertsHotel.save_to_file(file_name)
 
     elif choice == 7:
-        print(HilbertsHotel.memory_usage())
+        print("Memory Usage: " + str(HilbertsHotel.memory_usage()) + " bytes")
 
     elif choice == 8:
         break
